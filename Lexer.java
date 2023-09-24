@@ -9,9 +9,8 @@ public class Lexer {
     private HashMap<String,Token.tokenType> keyWords = new HashMap<String,Token.tokenType>();
     private HashMap<String,Token.tokenType> doubleOperators = new HashMap<String,Token.tokenType>();
     private HashMap<String,Token.tokenType> singleOperators = new HashMap<String,Token.tokenType>();
-    public Lexer(String file){
-
-    }
+    public Lexer(){}
+    public Lexer(String file){}
     public LinkedList<Token> Lex(String file) throws Exception {
         awkFile = new StringHandler(file);
         //adds values to hashmap
