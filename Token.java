@@ -1,11 +1,11 @@
 public class Token {
     //i'm sorry
     public enum tokenType {
-        WORD, NUMBER, SEPARATOR, STRINGLITERAL, REGULAREXPRESSION, WHILE, IF, DO, FOR, BREAK, CONTINUE, ELSE, RETURN, BEGIN, END, PRINT, PRINTF, NEXT, IN,
-        DELETE, GETLINE, EXIT, NEXTFILE, FUNCTION, GREATERorEQUALS, INCREMENTUP, INCREMENTDOWN, LESSorEQUALS, COMPARETO,
-        DOESNOTEQUAL, EXPONENTIALEQUAL, MODULOEQUAL, TIMESEQUAL, DIVIDEEQUAL, PLUSEQUAL, MINUSEQUAL, DOESNOTMATCH,
-        AND, APPEND, OR, RIGHTPARENTHESIS, LEFTPARENTHESIS, RIGHTBRACKET, LEFTBRACKET, RIGHTBRACE, LEFTBRACE, DOLLARSIGN,
-        TILDA, EQUALS, LESSTHAN, GREATERTHAN, NOT, PLUS, EXPONENTIAL, MINUS, QUESTIONMARK, COLON, TIMES, DIVIDE, MODULO, COMMA, PIPE
+        WORD, NUMBER, SEPARATOR, STRINGLITERAL, PATTERN, WHILE, IF, DO, FOR, BREAK, CONTINUE, ELSE, RETURN, BEGIN, END, PRINT, PRINTF, NEXT, IN,
+        DELETE, GETLINE, EXIT, NEXTFILE, FUNCTION, GE, INCREMENT, DECREMENT, LE, COMPARETO,
+        NOTEQUAL, EXPONENTIALEQUAL, MODULOEQUAL, TIMESEQUAL, DIVIDEEQUAL, PLUSEQUAL, MINUSEQUAL, NOTMATCH,
+        AND, APPEND, OR, RIGHTPARENTHESIS, LEFTPARENTHESIS, RIGHTBRACKET, LEFTBRACKET, RIGHTBRACE, LEFTBRACE, DOLLAR,
+        MATCH, EQUALS, LT, GT, NOT, PLUS, EXPONENTIAL, SUBTRACT, QUESTIONMARK, COLON, MULTIPLY, DIVIDE, MODULO, COMMA, PIPE
     }
     //>=  ++  --  <=  ==  !=  ^=  %=  *=  /=  +=  -=  !~   &&   >>   || { } [ ] ( ) $ ~ = < > !  + ^ - ?  : * / % ; \n | ,
     private String value = null;
@@ -25,12 +25,23 @@ public class Token {
     public void setValue(String value) {
         this.value = value;
     }
+
     public tokenType getType(){
         return type;
     }
+
     public String getValue(){
         return value;
     }
+
+    public int getLineNumber(){
+        return lineNumber;
+    }
+
+    public int getPosition(){
+        return position;
+    }
+
     public String toString(){
         //if statement to avoid unnecessary characters
         if(value != null) {

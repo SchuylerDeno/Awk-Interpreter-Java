@@ -9,9 +9,9 @@ public class Lexer {
     private HashMap<String,Token.tokenType> keyWords = new HashMap<String,Token.tokenType>();
     private HashMap<String,Token.tokenType> doubleOperators = new HashMap<String,Token.tokenType>();
     private HashMap<String,Token.tokenType> singleOperators = new HashMap<String,Token.tokenType>();
-    public Lexer(String file){
-
+    public Lexer(){
     }
+    public Lexer(String file){}
     public LinkedList<Token> Lex(String file) throws Exception {
         awkFile = new StringHandler(file);
         //adds values to hashmap
@@ -156,13 +156,21 @@ public class Lexer {
         if(!awkFile.IsDone()) {
             //this while loop assembles the String Literal.
             while(!awkFile.IsDone()) {
-                //This if statement checks for escaped " and treats them accordingly.
+                //This if statement checks for escaped ", \n, and \t and treats them accordingly.
                 if(awkFile.Peek(0) == '\\'){
                     if(!awkFile.IsDone()) {
                         if(awkFile.Peek(1)=='"') {
                             awkFile.Swallow(2);
                             position+=2;
                             current += '"';
+                        }else if(awkFile.Peek(1)=='n'){
+                            awkFile.Swallow(2);
+                            position+=2;
+                            current += '\n';
+                        }else if(awkFile.Peek(1)=='t'){
+                            awkFile.Swallow(2);
+                            position+=2;
+                            current += '\t';
                         }
                     }
                 }
@@ -206,7 +214,7 @@ public class Lexer {
                 throw new Exception("Syntax error, no closing ` at line number " + lineNumber + "/position " + startPosition);
             } else if (awkFile.Peek(0) == '`') {
                 awkFile.Swallow(1);
-                Token regularExpression = new Token(Token.tokenType.REGULAREXPRESSION, lineNumber, startPosition);
+                Token regularExpression = new Token(Token.tokenType.PATTERN, lineNumber, startPosition);
                 regularExpression.setValue(current);
                 tokens.add(regularExpression);
             }
@@ -235,19 +243,19 @@ public class Lexer {
         keyWords.put("exit", Token.tokenType.EXIT );
 
         //fills the doubleOperators hashmap
-        doubleOperators.put(">=", Token.tokenType.GREATERorEQUALS);
-        doubleOperators.put("++", Token.tokenType.INCREMENTUP);
-        doubleOperators.put("--", Token.tokenType.INCREMENTDOWN);
-        doubleOperators.put("<=", Token.tokenType.LESSorEQUALS);
+        doubleOperators.put(">=", Token.tokenType.GE);
+        doubleOperators.put("++", Token.tokenType.INCREMENT);
+        doubleOperators.put("--", Token.tokenType.DECREMENT);
+        doubleOperators.put("<=", Token.tokenType.LE);
         doubleOperators.put("==", Token.tokenType.COMPARETO);
         doubleOperators.put("^=", Token.tokenType.EXPONENTIALEQUAL);
-        doubleOperators.put("!=", Token.tokenType.DOESNOTEQUAL);
+        doubleOperators.put("!=", Token.tokenType.NOTEQUAL);
         doubleOperators.put("%=", Token.tokenType.MODULOEQUAL);
         doubleOperators.put("*=", Token.tokenType.TIMESEQUAL);
         doubleOperators.put("/=", Token.tokenType.DIVIDEEQUAL);
         doubleOperators.put("+=", Token.tokenType.PLUSEQUAL);
         doubleOperators.put("-=", Token.tokenType.MINUSEQUAL);
-        doubleOperators.put("!~", Token.tokenType.DOESNOTMATCH);
+        doubleOperators.put("!~", Token.tokenType.NOTMATCH);
         doubleOperators.put("&&", Token.tokenType.AND);
         doubleOperators.put(">>", Token.tokenType.APPEND);
         doubleOperators.put("||", Token.tokenType.OR);
@@ -259,18 +267,18 @@ public class Lexer {
         singleOperators.put("[",Token.tokenType.LEFTBRACKET);
         singleOperators.put(")",Token.tokenType.RIGHTPARENTHESIS);
         singleOperators.put("(",Token.tokenType.LEFTPARENTHESIS);
-        singleOperators.put("$",Token.tokenType.DOLLARSIGN);
-        singleOperators.put("~",Token.tokenType.TILDA);
+        singleOperators.put("$",Token.tokenType.DOLLAR);
+        singleOperators.put("~",Token.tokenType.MATCH);
         singleOperators.put("=",Token.tokenType.EQUALS);
-        singleOperators.put("<",Token.tokenType.LESSTHAN);
-        singleOperators.put(">",Token.tokenType.GREATERTHAN);
+        singleOperators.put("<",Token.tokenType.LT);
+        singleOperators.put(">",Token.tokenType.GT);
         singleOperators.put("!",Token.tokenType.NOT);
         singleOperators.put("+",Token.tokenType.PLUS);
         singleOperators.put("^",Token.tokenType.EXPONENTIAL);
-        singleOperators.put("-",Token.tokenType.MINUS);
+        singleOperators.put("-",Token.tokenType.SUBTRACT);
         singleOperators.put("?",Token.tokenType.QUESTIONMARK);
         singleOperators.put(":",Token.tokenType.COLON);
-        singleOperators.put("*",Token.tokenType.TIMES);
+        singleOperators.put("*",Token.tokenType.MULTIPLY);
         singleOperators.put("/",Token.tokenType.DIVIDE);
         singleOperators.put("%",Token.tokenType.MODULO);
         singleOperators.put(";",Token.tokenType.SEPARATOR);
